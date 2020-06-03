@@ -1,4 +1,5 @@
-﻿using Game_Store.Models;
+﻿using Game_Store.Dtos;
+using Game_Store.Models;
 using System.Collections.Generic;
 
 namespace Game_Store.Data

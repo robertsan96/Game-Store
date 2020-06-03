@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Game_Store.Data;
+using Game_Store.Dtos;
 using Game_Store.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,18 +15,22 @@ namespace Game_Store.Controllers
     [Route("api/[controller]")]
     public class GameController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<IEnumerable<Game>> GetGames()
+        private readonly IGameStoreRepository _repository;
+        private readonly IMapper _mapper;
+
+        public GameController(IGameStoreRepository repository, IMapper mapper)
         {
-            return new List<Game>
-            {
-                new Game
-                {
-                    Name="Shadow of the Tomb Raider",
-                    Description="Game of the year.",
-                    ReleaseDate=DateTime.Now
-                }
-            };
+            _repository = repository;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<GameReadDto>> GetGames()
+        {
+            var games = _repository.GetGames();
+
+            return Ok(_mapper.Map<IEnumerable<GameReadDto>>(games));
+
         }
     }
 }
