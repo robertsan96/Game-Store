@@ -24,6 +24,17 @@ namespace Game_Store.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("{id}", Name="GetGameById")]
+        public ActionResult<GameReadDto> GetGameById(int id)
+        {
+            var game = _repository.GetGameById(id);
+            if (game == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<GameReadDto>(game));
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<GameReadDto>> GetGames()
         {
@@ -31,6 +42,16 @@ namespace Game_Store.Controllers
 
             return Ok(_mapper.Map<IEnumerable<GameReadDto>>(games));
 
+        }
+
+        [HttpPost]
+        public ActionResult<GameReadDto> CreateGame(GameCreateDto game)
+        {
+            var gameModel = _mapper.Map<Game>(game);
+            _repository.CreateGame(gameModel);
+            _repository.SaveChanges();
+            var gameReadDto = _mapper.Map<GameReadDto>(gameModel);
+            return CreatedAtRoute(nameof(GetGameById), new { Id = gameModel.Id }, gameReadDto);
         }
     }
 }

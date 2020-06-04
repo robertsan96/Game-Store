@@ -8,5 +8,7 @@ namespace Game_Store.Data
     {
         IEnumerable<Game> GetGames();
         Game GetGameById(int id);
+        void CreateGame(Game game);
+        void SaveChanges();
     }
 }

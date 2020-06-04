@@ -13,6 +13,7 @@ namespace Game_Store.Profiles
         public GamesProfile()
         {
             CreateMap<Game, GameReadDto>();
+            CreateMap<GameCreateDto, Game>();
         }
     }
 }

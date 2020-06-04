@@ -24,6 +24,7 @@ namespace Game_Store
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<GameStoreDbContext>();
             services.AddControllersWithViews();
 
             
@@ -33,8 +34,9 @@ namespace Game_Store
                 configuration.RootPath = "ClientApp/build";
             });
 
+            services.AddCors();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<IGameStoreRepository, MockRepository>();
+            services.AddScoped<IGameStoreRepository, GameStoreSqlRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
