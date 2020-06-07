@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Game_Store
 {
@@ -24,10 +25,8 @@ namespace Game_Store
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<GameStoreDbContext>();
             services.AddControllersWithViews();
 
-            
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -35,6 +34,7 @@ namespace Game_Store
             });
 
             services.AddCors();
+            services.AddDbContext<GameStoreDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("GameStoreDatabase")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IGameStoreRepository, GameStoreSqlRepository>();
         }
